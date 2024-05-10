@@ -14,6 +14,7 @@ namespace Zeiss.PiWeb.Api.Rest.Tests.HttpClient.ReportManagement
 
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using System.Threading.Tasks;
 	using FluentAssertions;
 	using Newtonsoft.Json;
@@ -50,15 +51,9 @@ namespace Zeiss.PiWeb.Api.Rest.Tests.HttpClient.ReportManagement
 			RegisterReportManagementReportMetadataResponse( webServer, deleted, [] );
 
 			using var sut = new ReportManagementServiceRestClient( Uri );
-			var actual = sut.GetReportMetadataListAsync( deleted );
+			var actual = await sut.GetReportMetadataList( deleted );
 
-			var count = 0;
-			await foreach( var elem in actual )
-			{
-				count++;
-			}
-
-			count.Should().Be( 0 );
+			actual.Count.Should().Be( 0 );
 		}
 
 		[Test]
@@ -71,15 +66,9 @@ namespace Zeiss.PiWeb.Api.Rest.Tests.HttpClient.ReportManagement
 			RegisterReportManagementReportMetadataResponse( webServer, deleted, [Stubs.ReportMetadataDto.Create(), Stubs.ReportMetadataDto.Create()] );
 
 			using var sut = new ReportManagementServiceRestClient( Uri );
-			var actual = sut.GetReportMetadataListAsync( deleted);
+			var actual = await sut.GetReportMetadataList( deleted);
 
-			var count = 0;
-			await foreach( var elem in actual )
-			{
-				count++;
-			}
-
-			count.Should().Be( 2 );
+			actual.Count.Should().Be( 2 );
 		}
 
 		[Test]
@@ -120,14 +109,9 @@ namespace Zeiss.PiWeb.Api.Rest.Tests.HttpClient.ReportManagement
 			RegisterReportManagementReportMetadataResponse( webServer, deleted, [availableMetadata] );
 
 			using var sut = new ReportManagementServiceRestClient( Uri );
-			var result = sut.GetReportMetadataListAsync( deleted);
+			var result = await sut.GetReportMetadataList( deleted);
 
-			ReportMetadataDto actual = null;
-			await foreach( var elem in result )
-			{
-				actual = elem;
-				break;
-			}
+			var actual = result.FirstOrDefault();
 
 			JsonConvert.SerializeObject( availableMetadata ).Should().BeEquivalentTo( JsonConvert.SerializeObject( actual ) );
 		}

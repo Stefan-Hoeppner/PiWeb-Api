@@ -48,7 +48,7 @@ namespace Zeiss.PiWeb.Api.Rest.Contracts
 		/// <see langword="null" /> if the result should not be restricted regarding deletion.
 		/// </param>
 		/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-		IAsyncEnumerable<ReportMetadataDto> GetReportMetadataListAsync( bool? deleted, CancellationToken cancellationToken = default );
+		Task<IReadOnlyCollection<ReportMetadataDto>> GetReportMetadataList( bool? deleted, CancellationToken cancellationToken = default );
 
 		#endregion
 	}

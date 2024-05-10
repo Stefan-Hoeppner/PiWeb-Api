@@ -15,9 +15,6 @@ namespace Zeiss.PiWeb.Api.Rest.HttpClient.ReportManagement
 
 	using System;
 	using System.Collections.Generic;
-	using System.IO;
-	using System.Net;
-	using System.Net.Http;
 	using System.Threading;
 	using System.Threading.Tasks;
 	using JetBrains.Annotations;
@@ -71,9 +68,9 @@ namespace Zeiss.PiWeb.Api.Rest.HttpClient.ReportManagement
 		public ICustomRestClient CustomRestClient => _RestClient;
 
 		/// <inheritdoc />
-		public IAsyncEnumerable<ReportMetadataDto> GetReportMetadataListAsync( bool? deleted, CancellationToken cancellationToken = default )
+		public Task<IReadOnlyCollection<ReportMetadataDto>> GetReportMetadataList( bool? deleted, CancellationToken cancellationToken = default )
 		{
-			return _RestClient.RequestEnumerated<ReportMetadataDto>(
+			return _RestClient.Request<IReadOnlyCollection<ReportMetadataDto>>(
 				deleted == null
 					? RequestBuilder.CreateGet( "Reports" )
 					: RequestBuilder.CreateGet( "Reports", ParameterDefinition.Create( "deleted", deleted.Value.ToString() ) ),
