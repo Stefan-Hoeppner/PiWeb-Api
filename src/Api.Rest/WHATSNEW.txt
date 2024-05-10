@@ -1,1 +1,1 @@
-﻿- Add new HttpClient 'ReportManagementServiceRestClient' to interact with the endpoints under /ReportManagementServiceRest.
+﻿- Add new HttpClient 'ReportManagementServiceRestClient' to interact with the /ReportManagementServiceRest/Reports endpoint.
